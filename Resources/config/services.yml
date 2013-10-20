@@ -1,0 +1,11 @@
+services:
+    arodiss.xls.reader:
+        class: Arodiss\XlsBundle\Xls\Reader\Reader
+
+    arodiss.xls.writer:
+        class: Arodiss\XlsBundle\Xls\Writer\Writer
+
+    arodiss.xls.writer.buffered:
+        class: Arodiss\XlsBundle\Xls\Writer\BufferedWriter
+        arguments:
+          - @arodiss.xls.writer

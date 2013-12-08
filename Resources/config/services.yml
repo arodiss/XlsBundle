@@ -9,3 +9,8 @@ services:
         class: Arodiss\XlsBundle\Xls\Writer\BufferedWriter
         arguments:
           - @arodiss.xls.writer
+
+    arodiss.xls.builder:
+        class: Arodiss\XlsBundle\Xls\Builder\XlsBuilder
+        arguments:
+          - @arodiss.xls.writer.buffered:

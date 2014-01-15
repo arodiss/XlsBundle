@@ -12,7 +12,7 @@ class Writer extends AbstractWriter {
 
 	/** {@inheritdoc} */
 	public function create($path, array $firstRow) {
-		$workbook = new Workbook();
+        $workbook = new Workbook();
 		$sheet = new Sheet($workbook);
 		$table = new Table();
 
@@ -41,4 +41,41 @@ class Writer extends AbstractWriter {
 		$objWriter = new \PHPExcel_Writer_Excel5($phpExcel);
 		$objWriter->save($path);
 	}
+
+    /**
+     * @param string $path
+     * @param array $rows
+     */
+    public function createAndWrite($path, array $rows) {
+        $objPHPExcel = new \PHPExcel();
+        $objPHPExcel->setActiveSheetIndex(0);
+        $maxColumnIndex = 0;
+
+        foreach ($rows as $rowIndex => $row) {
+            foreach ($row as $columnIndex => $cell) {
+                $maxColumnIndex = max($columnIndex, $maxColumnIndex);
+
+                $objPHPExcel
+                    ->getActiveSheet()
+                    ->setCellValueExplicitByColumnAndRow(
+                        $columnIndex,
+                        $rowIndex + 1,
+                        $cell,
+                        \PHPExcel_Cell_DataType::TYPE_STRING
+                    )
+                ;
+            }
+        }
+
+        for ($i = 0; $i<$maxColumnIndex; $i++) {
+            $objPHPExcel
+                ->getActiveSheet()
+                ->getColumnDimensionByColumn($i)
+                ->setAutoSize(true)
+            ;
+        }
+
+        $writer = \PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
+        $writer->save($path);
+    }
 }

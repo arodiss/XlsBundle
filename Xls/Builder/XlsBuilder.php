@@ -30,10 +30,7 @@ class XlsBuilder
             throw new \Exception("Cannot create empty file");
         }
         $tmpFile = tempnam(sys_get_temp_dir(), "xls-build") . ".xls";
-        $row = $rows[0];
-        unset($rows[0]);
-        $this->writer->create($tmpFile, $row);
-        $this->writer->appendRows($tmpFile, $rows);
+        $this->writer->createAndWrite($tmpFile, $rows);
         if ($this->writer instanceof BufferedWriter) {
             $this->writer->flush();
         }

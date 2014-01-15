@@ -45,20 +45,25 @@ class BufferedWriter extends AbstractWriter {
 		}
 	}
 
-	/** @param string $path */
+    /** {@inheritdoc} */
+    public function createAndWrite($path, array $rows) {
+        $this->writer->createAndWrite($path, $rows);
+    }
+
+    /** @param string $path */
 	protected function createBuffer($path) {
 		if (false == isset($this->buffers[$path])) {
 			$this->buffers[$path] = array();
 		}
 	}
 
-	/**
+    /**
 	 * @param null|string $bufferName
 	 * @return array
 	 * @throws \InvalidArgumentException
 	 */
 	protected function getBuffers($bufferName = null) {
-		if($bufferName) {
+		if ($bufferName) {
 			if (false == isset($this->buffers[$bufferName])) {
 				throw new \InvalidArgumentException("There is no buffer for $bufferName");
 			}

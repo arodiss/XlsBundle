@@ -45,6 +45,27 @@ while($iterator->valid())
 //same output format
 ```
 
+Download XLS file
+--------
+```PHP
+$file = $container
+    ->get("arodiss.xls.builder")
+    ->createAndWrite(array(
+        array("row one field one", "row one field two"),
+        array("row two field one")
+    ))
+;
+
+//now $file is path to tmp file with data
+
+$response = new Response();
+$response->headers->set("Content-Type", "application/vnd.ms-excel");
+$response->headers->set("Content-Disposition", "attachment;filename=excelfile.xls");
+$response->setContent(file_get_contents($file));
+$response->send();
+```
+
+
 Write in a file (recommended)
 --------
 ```PHP

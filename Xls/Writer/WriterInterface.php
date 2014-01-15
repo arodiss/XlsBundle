@@ -20,4 +20,10 @@ interface WriterInterface {
 	 * @param array $row
 	 */
 	public function appendRow($path, array $row);
+
+    /**
+     * @param string $path
+     * @param array $row
+     */
+    public function createAndWrite($path, array $row);
 }

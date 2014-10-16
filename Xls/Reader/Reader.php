@@ -14,12 +14,13 @@ class Reader {
 		return $this->getExcel($path)->toArray();
 	}
 
-	/**
-	 * @param string $path
-	 * @return \Iterator
-	 */
-	public function getReadIterator($path) {
-		return new StringifyIterator(new NestingDiscloseIterator($this->getExcel($path)->getRowIterator()));
+    /**
+     * @param string $path
+     * @param $startRow
+     * @return \Iterator
+     */
+	public function getReadIterator($path, $startRow = 1) {
+		return new StringifyIterator(new NestingDiscloseIterator($this->getExcel($path)->getRowIterator($startRow)));
 	}
 
 	/**

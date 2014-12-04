@@ -1,34 +1,17 @@
 <?php
 namespace Arodiss\XlsBundle\Xls\Writer;
 
-use ExcelAnt\Adapter\PhpExcel\Sheet\Sheet;
-use ExcelAnt\Adapter\PhpExcel\Workbook\Workbook;
-use ExcelAnt\Adapter\PhpExcel\Writer\PhpExcelWriter\Excel5;
-use ExcelAnt\Adapter\PhpExcel\Writer\WriterFactory;
-use ExcelAnt\Coordinate\Coordinate;
-use ExcelAnt\Table\Table;
+use \PHPExcel_IOFactory;
+use \PHPExcel_Writer_Excel5;
+use \PHPExcel_Cell_DataType;
+use \PHPExcel;
 
-class Writer extends AbstractWriter {
-
-	/** {@inheritdoc} */
-	public function create($path, array $firstRow) {
-        $workbook = new Workbook();
-		$sheet = new Sheet($workbook);
-		$table = new Table();
-
-		$table->setRow($firstRow);
-
-		$sheet->addTable($table, new Coordinate(1, 1));
-		$workbook->addSheet($sheet);
-
-		$writer = (new WriterFactory())->createWriter(new Excel5($path));
-		$phpExcel = $writer->convert($workbook);
-		$writer->write($phpExcel);
-	}
-
-	/** {@inheritdoc} */
-	public function appendRows($path, array $rows) {
-		$phpExcel = \PHPExcel_IOFactory::load($path);
+class Writer extends AbstractWriter
+{
+    /** {@inheritdoc} */
+	public function appendRows($path, array $rows)
+    {
+		$phpExcel = PHPExcel_IOFactory::load($path);
 		$phpExcel->setActiveSheetIndex(0);
 		$rowIndex = $phpExcel->getActiveSheet()->getHighestRow() + 1;
 		foreach ($rows as $row) {
@@ -38,44 +21,52 @@ class Writer extends AbstractWriter {
 			$rowIndex ++;
 		}
 
-		$objWriter = new \PHPExcel_Writer_Excel5($phpExcel);
-		$objWriter->save($path);
+        $this->createWriter($phpExcel)->save($path);
 	}
 
     /**
      * @param string $path
      * @param array $rows
      */
-    public function createAndWrite($path, array $rows) {
-        $objPHPExcel = new \PHPExcel();
-        $objPHPExcel->setActiveSheetIndex(0);
+    public function createAndWrite($path, array $rows)
+    {
+        $phpExcel = new PHPExcel();
+        $phpExcel->setActiveSheetIndex(0);
         $maxColumnIndex = 0;
 
         foreach ($rows as $rowIndex => $row) {
             foreach ($row as $columnIndex => $cell) {
                 $maxColumnIndex = max($columnIndex, $maxColumnIndex);
 
-                $objPHPExcel
+                $phpExcel
                     ->getActiveSheet()
                     ->setCellValueExplicitByColumnAndRow(
                         $columnIndex,
                         $rowIndex + 1,
                         $cell,
-                        \PHPExcel_Cell_DataType::TYPE_STRING
+                        PHPExcel_Cell_DataType::TYPE_STRING
                     )
                 ;
             }
         }
 
         for ($i = 0; $i<$maxColumnIndex; $i++) {
-            $objPHPExcel
+            $phpExcel
                 ->getActiveSheet()
                 ->getColumnDimensionByColumn($i)
                 ->setAutoSize(true)
             ;
         }
 
-        $writer = \PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
-        $writer->save($path);
+        $this->createWriter($phpExcel)->save($path);
+    }
+
+    /**
+     * @param PHPExcel $phpExcel
+     * @return \PHPExcel_Writer_Excel5
+     */
+    protected function createWriter(PHPExcel $phpExcel)
+    {
+        return new PHPExcel_Writer_Excel5($phpExcel);
     }
 }

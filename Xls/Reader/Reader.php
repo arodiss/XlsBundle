@@ -77,14 +77,23 @@ class Reader
 
     /**
      * @param $path
-     * @return \PHPExcel_Reader_IReader
+     * @return \PHPExcel_Reader_Abstract
      * @throws \PHPExcel_Reader_Exception
      */
     protected function getExcelWithoutSheet($path)
     {
-        $reader = \PHPExcel_IOFactory::createReaderForFile($path);
+        $reader = $this->createReaderForFile($path);
         $reader->setReadDataOnly(true);
 
         return $reader;
+    }
+
+    /**
+     * @param string $path
+     * @return \PHPExcel_Reader_Abstract
+     */
+    protected function createReaderForFile($path)
+    {
+        return \PHPExcel_IOFactory::createReaderForFile($path);
     }
 }

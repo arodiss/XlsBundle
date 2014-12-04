@@ -9,7 +9,7 @@ Via composer:
 ```
 require: {
     ...
-    "arodiss/xls-bundle": "~0.1"
+    "arodiss/xls-bundle": "*@stable"
 }
 ```
 

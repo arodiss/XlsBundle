@@ -1,7 +1,8 @@
 <?php
 namespace Arodiss\XlsBundle\Xls\Writer;
 
-interface WriterInterface {
+interface WriterInterface
+{
 
 	/**
 	 * @param string $path

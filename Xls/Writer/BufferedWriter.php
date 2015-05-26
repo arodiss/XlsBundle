@@ -4,53 +4,53 @@ namespace Arodiss\XlsBundle\Xls\Writer;
 class BufferedWriter extends AbstractWriter
 {
 
-	/** @var WriterInterface */
-	protected $writer;
+    /** @var WriterInterface */
+    protected $writer;
 
-	/** @var array */
-	protected $buffers = array();
+    /** @var array */
+    protected $buffers = array();
 
-	/** @param WriterInterface $writer */
-	public function __construct(WriterInterface $writer)
+    /** @param WriterInterface $writer */
+    public function __construct(WriterInterface $writer)
     {
-		$this->writer = $writer;
-	}
+        $this->writer = $writer;
+    }
 
-	public function __destruct()
+    public function __destruct()
     {
-		$this->flush();
-	}
+        $this->flush();
+    }
 
-	/** {@inheritdoc} */
-	public function create($path, array $firstRow)
+    /** {@inheritdoc} */
+    public function create($path, array $firstRow)
     {
-		return $this->writer->create($path, $firstRow);
-	}
+        return $this->writer->create($path, $firstRow);
+    }
 
-	/** {@inheritdoc} */
-	public function appendRows($path, array $rows)
+    /** {@inheritdoc} */
+    public function appendRows($path, array $rows)
     {
-		$this->createBuffer($path);
-		foreach ($rows as $row) {
-			array_push($this->buffers[$path], $row);
-		}
-	}
+        $this->createBuffer($path);
+        foreach ($rows as $row) {
+            array_push($this->buffers[$path], $row);
+        }
+    }
 
-	/** @param null|string $bufferName */
-	public function flush($bufferName = null)
+    /** @param null|string $bufferName */
+    public function flush($bufferName = null)
     {
-		foreach ($this->getBuffers($bufferName) as $path => $buffer){
-			$this->writer->appendRows($path, $buffer);
-		}
-	}
+        foreach ($this->getBuffers($bufferName) as $path => $buffer){
+            $this->writer->appendRows($path, $buffer);
+        }
+    }
 
-	/** @param null|string $bufferName */
-	public function discard($bufferName = null)
+    /** @param null|string $bufferName */
+    public function discard($bufferName = null)
     {
-		foreach ($this->getBuffers($bufferName) as $path => $buffer) {
-			$this->writer->appendRows($path, $buffer);
-		}
-	}
+        foreach ($this->getBuffers($bufferName) as $path => $buffer) {
+            $this->writer->appendRows($path, $buffer);
+        }
+    }
 
     /** {@inheritdoc} */
     public function createAndWrite($path, array $rows)
@@ -59,27 +59,27 @@ class BufferedWriter extends AbstractWriter
     }
 
     /** @param string $path */
-	protected function createBuffer($path)
+    protected function createBuffer($path)
     {
-		if (false == isset($this->buffers[$path])) {
-			$this->buffers[$path] = array();
-		}
-	}
+        if (false == isset($this->buffers[$path])) {
+            $this->buffers[$path] = array();
+        }
+    }
 
     /**
-	 * @param null|string $bufferName
-	 * @return array
-	 * @throws \InvalidArgumentException
-	 */
-	protected function getBuffers($bufferName = null)
+     * @param null|string $bufferName
+     * @return array
+     * @throws \InvalidArgumentException
+     */
+    protected function getBuffers($bufferName = null)
     {
-		if ($bufferName) {
-			if (false == isset($this->buffers[$bufferName])) {
-				throw new \InvalidArgumentException("There is no buffer for $bufferName");
-			}
-			return array($bufferName => $this->buffers[$bufferName]);
-		} else {
-			return $this->buffers;
-		}
-	}
+        if ($bufferName) {
+            if (false == isset($this->buffers[$bufferName])) {
+                throw new \InvalidArgumentException("There is no buffer for $bufferName");
+            }
+            return array($bufferName => $this->buffers[$bufferName]);
+        } else {
+            return $this->buffers;
+        }
+    }
 }

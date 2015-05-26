@@ -85,4 +85,4 @@ If for some reason this is not what you want to achieve, you may use service `xl
 
 Formats supported
 --------
-Files are always written in Excel5 (.xls) format. Read operations, however, MAY work also for other formats supported by PHPExcel (Office Open XML, SpreadsheetML, OASIS, CSV, Gnumeric, SYLK) however there is no guarantee for it.
+Files are always written in Excel2007 (.xlsx) format. Read operations, however, MAY work also for other formats supported by PHPExcel (Excel5, Office Open XML, SpreadsheetML, OASIS, CSV, Gnumeric, SYLK) however there is no guarantee for it.

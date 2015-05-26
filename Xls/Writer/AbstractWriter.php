@@ -9,9 +9,9 @@ abstract class AbstractWriter implements WriterInterface
         $this->createAndWrite($path, [$firstRow]);
     }
 
-	/** {@inheritdoc} */
-	public function appendRow($path, array $row)
+    /** {@inheritdoc} */
+    public function appendRow($path, array $row)
     {
-		$this->appendRows($path, array($row));
-	}
+        $this->appendRows($path, array($row));
+    }
 }

@@ -2,27 +2,27 @@
 namespace Arodiss\XlsBundle\Xls\Writer;
 
 use \PHPExcel_IOFactory;
-use \PHPExcel_Writer_Excel5;
+use \PHPExcel_Writer_Excel2007;
 use \PHPExcel_Cell_DataType;
 use \PHPExcel;
 
 class Writer extends AbstractWriter
 {
     /** {@inheritdoc} */
-	public function appendRows($path, array $rows)
+    public function appendRows($path, array $rows)
     {
-		$phpExcel = PHPExcel_IOFactory::load($path);
-		$phpExcel->setActiveSheetIndex(0);
-		$rowIndex = $phpExcel->getActiveSheet()->getHighestRow() + 1;
-		foreach ($rows as $row) {
-			foreach($row as $columnIndex => $value) {
-				$phpExcel->getActiveSheet()->setCellValueByColumnAndRow($columnIndex, $rowIndex, $value);
-			}
-			$rowIndex ++;
-		}
+        $phpExcel = PHPExcel_IOFactory::load($path);
+        $phpExcel->setActiveSheetIndex(0);
+        $rowIndex = $phpExcel->getActiveSheet()->getHighestRow() + 1;
+        foreach ($rows as $row) {
+            foreach($row as $columnIndex => $value) {
+                $phpExcel->getActiveSheet()->setCellValueByColumnAndRow($columnIndex, $rowIndex, $value);
+            }
+            $rowIndex ++;
+        }
 
         $this->createWriter($phpExcel)->save($path);
-	}
+    }
 
     /**
      * @param string $path
@@ -63,10 +63,10 @@ class Writer extends AbstractWriter
 
     /**
      * @param PHPExcel $phpExcel
-     * @return \PHPExcel_Writer_Excel5
+     * @return PHPExcel_Writer_Excel2007
      */
     protected function createWriter(PHPExcel $phpExcel)
     {
-        return new PHPExcel_Writer_Excel5($phpExcel);
+        return new PHPExcel_Writer_Excel2007($phpExcel);
     }
 }

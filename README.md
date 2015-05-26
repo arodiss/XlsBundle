@@ -59,8 +59,8 @@ $file = $container
 //now $file is path to tmp file with data
 
 $response = new Response();
-$response->headers->set("Content-Type", "application/vnd.ms-excel");
-$response->headers->set("Content-Disposition", "attachment;filename=excelfile.xls");
+$response->headers->set("Content-Type", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+$response->headers->set("Content-Disposition", "attachment;filename=excelfile.xlsx");
 $response->setContent(file_get_contents($file));
 $response->send();
 ```

@@ -8,6 +8,8 @@ use Arodiss\XlsBundle\Filter\RowFilter;
 
 class Reader
 {
+    /** \PHPExcel_Reader_Abstract[] */
+    private $worksheets = [];
 
     /**
      * @param string $path
@@ -26,7 +28,7 @@ class Reader
      */
     public function getByFilterAsArray($path, $startRow = 1, $size = 65000)
     {
-        return RowFilter::clearEmptyRows($this->getPartOfExcel($path, $startRow, $size)->toArray());
+        return RowFilter::clearEmptyRows($this->getWorksheetPart($path, $startRow, $size)->toArray());
     }
 
     /**
@@ -54,9 +56,7 @@ class Reader
     protected function getExcel($path)
     {
         /** @var \PHPExcel $excel */
-        $excel = $this->getExcelWithoutSheet($path)->load($path);
-
-        return $excel->getActiveSheet();
+        return $this->getWorksheet($path);
     }
 
     /**
@@ -65,27 +65,30 @@ class Reader
      * @param $size
      * @return \PHPExcel_Worksheet
      */
-    protected function getPartOfExcel($path, $startRow, $size)
+    protected function getWorksheetPart($path, $startRow, $size)
     {
-        $reader = $this->getExcelWithoutSheet($path);
-        $reader->setReadFilter(new ReadFilter($startRow, $size));
-        /** @var \PHPExcel $excel */
-        $excel = $reader->load($path);
-
-        return $excel->getActiveSheet();
+        return $this->getWorksheet($path, new ReadFilter($startRow, $size));
     }
 
     /**
+     * @param string $path
+     * @param \PHPExcel_Reader_IReadFilter $readFilter
      * @param $path
-     * @return \PHPExcel_Reader_Abstract
+     * @return \PHPExcel_Worksheet
      * @throws \PHPExcel_Reader_Exception
      */
-    protected function getExcelWithoutSheet($path)
+    protected function getWorksheet($path, \PHPExcel_Reader_IReadFilter $readFilter = null)
     {
-        $reader = $this->createReaderForFile($path);
-        $reader->setReadDataOnly(true);
+        if (false === isset($this->worksheets[$path])) {
+            $reader = $this->createReaderForFile($path);
+            $reader->setReadDataOnly(true);
+            if ($readFilter) {
+                $reader->setReadFilter($readFilter);
+            }
+            $this->worksheets[$path] = $reader->load($path)->getActiveSheet();
+        }
 
-        return $reader;
+        return $this->worksheets[$path];
     }
 
     /**

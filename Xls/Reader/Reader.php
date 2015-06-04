@@ -79,7 +79,7 @@ class Reader
      */
     protected function getWorksheet($path, \PHPExcel_Reader_IReadFilter $readFilter = null)
     {
-        if (false === isset($this->worksheets[$path])) {
+        if (false === isset($this->worksheets[$path]) || $readFilter) {
             $reader = $this->createReaderForFile($path);
             $reader->setReadDataOnly(true);
             if ($readFilter) {

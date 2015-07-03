@@ -41,7 +41,7 @@ class BufferedWriter extends AbstractWriter
     {
         foreach ($this->getBuffers($bufferName) as $path => $buffer){
             $this->writer->appendRows($path, $buffer);
-            $this->buffers[$bufferName] = [];
+            $this->removeBuffer($path);
         }
     }
 

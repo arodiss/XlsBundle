@@ -41,7 +41,7 @@ class BufferedWriter extends AbstractWriter
     {
         foreach ($this->getBuffers($bufferName) as $path => $buffer){
             $this->writer->appendRows($path, $buffer);
-            $this->buffers[$bufferName] = [];
+            $this->removeBuffer($path);
         }
     }
 
@@ -49,7 +49,7 @@ class BufferedWriter extends AbstractWriter
     public function discard($bufferName = null)
     {
         foreach ($this->getBuffers($bufferName) as $path => $buffer) {
-            $this->writer->appendRows($path, $buffer);
+            $this->removeBuffer($path);
         }
     }
 
@@ -65,6 +65,12 @@ class BufferedWriter extends AbstractWriter
         if (false == isset($this->buffers[$path])) {
             $this->buffers[$path] = array();
         }
+    }
+
+    /** @param string $path */
+    protected function removeBuffer($path)
+    {
+        unset($this->buffers[$path]);
     }
 
     /**

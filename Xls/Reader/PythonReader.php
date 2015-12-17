@@ -7,7 +7,7 @@ use Symfony\Component\Process\Process;
 /**
  * This class is hacky, but sometimes it's the only option to achieve reasonable performance
  */
-class PythonReader implements ReaderInterface
+class PythonReader extends ReaderAbstract implements ReaderInterface
 {
     const XLRD_SCIPT_PATH = "excel_xlrd.py";
     const OPENPYXL_SCIPT_PATH = "excel_openpyxl.py";
@@ -15,6 +15,7 @@ class PythonReader implements ReaderInterface
     const COMMAND_GET_COUNT = "count";
     const COMMAND_READ_CHUNk = "read";
 
+    /** @var string */
     private $pythonExecutable;
 
     /** @param string $pythonExecutable */
@@ -24,13 +25,7 @@ class PythonReader implements ReaderInterface
     }
 
     /** {@inheirtdoc} */
-    public function readAll($path)
-    {
-        return $this->getByFilterAsArray($path, 1, 1000000);
-    }
-
-    /** {@inheirtdoc} */
-    public function getByFilterAsArray($path, $startRow = 1, $size = 65000)
+    public function getRowsChunk($path, $startRow = 1, $size = 65000)
     {
         return json_decode(
             $this->executeCommand(
@@ -48,16 +43,9 @@ class PythonReader implements ReaderInterface
     }
 
     /** {@inheritdoc} */
-    public function getItemsCount($path)
+    public function getRowsNumber($path)
     {
-
         return intval($this->executeCommand(self::COMMAND_GET_COUNT, $path));
-    }
-
-    /** {@inheritdoc} */
-    public function getHeaderRow($path)
-    {
-        return $this->getByFilterAsArray($path, 1, 1)[0];
     }
 
     /**

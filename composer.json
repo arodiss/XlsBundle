@@ -16,7 +16,7 @@
         "symfony/framework-bundle": "~2.3",
         "symfony/process": "~2.5",
         "phpoffice/phpexcel": "1.8.*"
-    }
+    },
     "autoload": {
         "psr-0": { "Arodiss\\XlsBundle": "" }
     },

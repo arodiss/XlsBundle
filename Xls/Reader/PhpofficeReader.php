@@ -1,4 +1,5 @@
 <?php
+
 namespace Arodiss\XlsBundle\Xls\Reader;
 
 use Arodiss\XlsBundle\Iterator\NestingDiscloseIterator;
@@ -6,44 +7,30 @@ use Arodiss\XlsBundle\Iterator\StringifyIterator;
 use Arodiss\XlsBundle\Filter\ReadFilter;
 use Arodiss\XlsBundle\Filter\RowFilter;
 
-class Reader
+class PhpofficeReader implements ReaderInterface
 {
     /** \PHPExcel_Reader_Abstract[] */
     private $worksheets = [];
 
-    /**
-     * @param string $path
-     * @return array
-     */
+    /** {@inheirtdoc} */
     public function readAll($path)
     {
         return $this->getExcel($path)->toArray();
     }
 
-    /**
-     * @param $path
-     * @param int $startRow
-     * @param int $size
-     * @return array
-     */
+    /** {@inheirtdoc} */
     public function getByFilterAsArray($path, $startRow = 1, $size = 65000)
     {
         return RowFilter::clearEmptyRows($this->getWorksheetPart($path, $startRow, $size)->toArray());
     }
 
-    /**
-     * @param string $path
-     * @return \Iterator
-     */
+    /** {@inheirtdoc} */
     public function getReadIterator($path)
     {
         return new StringifyIterator(new NestingDiscloseIterator($this->getExcel($path)->getRowIterator()));
     }
 
-    /**
-     * @param string $path
-     * @return \Iterator
-     */
+    /** {@inheirtdoc} */
     public function getItemsCount($path)
     {
         return $this->getExcel($path)->getHighestRow();

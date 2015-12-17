@@ -45,6 +45,23 @@ while($iterator->valid())
 //same output format
 ```
 
+Read even a bigger file
+--------
+Sometime PHPOffice just can't provide reasonable performance. For this case bundle provides alternative reader which wraps python implementation.
+It is rudimentary in terms of functionality and especially interactions (like error handling), but performs faster, especially on large files.
+In order to use it, you have to install `openpyxl` (for xlsx) and xlrd (for xls) libraries, which you can easily do through [pip](https://pypi.python.org/pypi/pip) package manager
+
+```PHP
+$reader = $container->get("arodiss.xls.reader.python");
+$iterator = $reader->getReadIterator("/path/to/file.xls");
+while($iterator->valid())
+{
+    var_dump($iterator->current());
+    $iterator->next();
+}
+//same output format
+```
+
 Download XLS file
 --------
 ```PHP

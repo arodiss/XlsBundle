@@ -16,7 +16,7 @@ interface ReaderInterface
      * @param int $size
      * @return array
      */
-    public function getByFilterAsArray($path, $startRow = 1, $size = 65000);
+    public function getRowsChunk($path, $startRow = 1, $size = 65000);
 
     /**
      * @param string $path
@@ -28,5 +28,11 @@ interface ReaderInterface
      * @param string $path
      * @return \Iterator
      */
-    public function getItemsCount($path);
+    public function getRowsNumber($path);
+
+    /**
+     * @param string $path
+     * @return array
+     */
+    public function getHeaderRow($path);
 }

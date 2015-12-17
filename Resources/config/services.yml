@@ -1,6 +1,9 @@
 services:
     arodiss.xls.reader:
-        class: Arodiss\XlsBundle\Xls\Reader\Reader
+        class: Arodiss\XlsBundle\Xls\Reader\PhpofficeReader
+
+    arodiss.xls.reader.python:
+        class: Arodiss\XlsBundle\Xls\Reader\PythonReader
 
     arodiss.xls.writer:
         class: Arodiss\XlsBundle\Xls\Writer\Writer

@@ -7,7 +7,7 @@ use Arodiss\XlsBundle\Iterator\StringifyIterator;
 use Arodiss\XlsBundle\Filter\ReadFilter;
 use Arodiss\XlsBundle\Filter\RowFilter;
 
-class PhpofficeReader implements ReaderInterface
+class PhpofficeReader extends ReaderAbstract implements ReaderInterface
 {
     /** \PHPExcel_Reader_Abstract[] */
     private $worksheets = [];
@@ -19,7 +19,7 @@ class PhpofficeReader implements ReaderInterface
     }
 
     /** {@inheirtdoc} */
-    public function getByFilterAsArray($path, $startRow = 1, $size = 65000)
+    public function getRowsChunk($path, $startRow = 1, $size = 65000)
     {
         return RowFilter::clearEmptyRows($this->getWorksheetPart($path, $startRow, $size)->toArray());
     }
@@ -31,7 +31,7 @@ class PhpofficeReader implements ReaderInterface
     }
 
     /** {@inheirtdoc} */
-    public function getItemsCount($path)
+    public function getRowsNumber($path)
     {
         return $this->getExcel($path)->getHighestRow();
     }

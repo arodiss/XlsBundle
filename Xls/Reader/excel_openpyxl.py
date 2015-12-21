@@ -25,7 +25,7 @@ def run(argv):
     for row in sheet.iter_rows(row_offset=int(args.start) - 1):
         current_row_read = []
         for cell in row:
-            current_row_read.append(str(cell.value))
+            current_row_read.append(cell.value.encode('utf-8'))
         rows.append(current_row_read)
         if len(rows) >= int(args.size):
           break

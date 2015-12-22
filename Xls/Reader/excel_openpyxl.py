@@ -3,6 +3,7 @@ import json
 import sys
 import os
 import argparse
+import datetime
 
 def run(argv):
   parser = argparse.ArgumentParser()
@@ -26,10 +27,16 @@ def run(argv):
         current_row_read = []
         for cell in row:
             value = cell.value
-            if isinstance(value, (int, long)):
+            if isinstance(value, (int, long, float)):
                 current_row_read.append(str(value))
-            else:
+            elif value is None:
+                current_row_read.append("")
+            elif isinstance(value, (datetime.datetime)):
+                current_row_read.append(value.strftime("%m/%d/%Y"))
+            elif isinstance(value, (str, unicode)):
                 current_row_read.append(value.encode('utf-8'))
+            else:
+                raise TypeError(type(value))
         rows.append(current_row_read)
         if len(rows) >= int(args.size):
           break

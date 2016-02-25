@@ -22,9 +22,9 @@ class BufferedWriter extends AbstractWriter
     }
 
     /** {@inheritdoc} */
-    public function create($path, array $firstRow)
+    public function create($path, array $firstRow, $sheetName = null)
     {
-        return $this->writer->create($path, $firstRow);
+        return $this->writer->create($path, $firstRow, $sheetName);
     }
 
     /** {@inheritdoc} */
@@ -54,9 +54,9 @@ class BufferedWriter extends AbstractWriter
     }
 
     /** {@inheritdoc} */
-    public function createAndWrite($path, array $rows)
+    public function createAndWrite($path, array $rows, $sheetName = null)
     {
-        $this->writer->createAndWrite($path, $rows);
+        $this->writer->createAndWrite($path, $rows, $sheetName);
     }
 
     /** @param string $path */

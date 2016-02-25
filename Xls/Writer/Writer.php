@@ -24,14 +24,14 @@ class Writer extends AbstractWriter
         $this->createWriter($phpExcel)->save($path);
     }
 
-    /**
-     * @param string $path
-     * @param array $rows
-     */
-    public function createAndWrite($path, array $rows)
+    /** {@inheritdoc} */
+    public function createAndWrite($path, array $rows, $sheetName = null)
     {
         $phpExcel = new PHPExcel();
         $phpExcel->setActiveSheetIndex(0);
+        if ($sheetName) {
+            $phpExcel->getActiveSheet()->setTitle($sheetName);
+        }
         $maxColumnIndex = 0;
 
         foreach ($rows as $rowIndex => $row) {

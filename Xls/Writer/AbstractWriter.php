@@ -4,9 +4,9 @@ namespace Arodiss\XlsBundle\Xls\Writer;
 abstract class AbstractWriter implements WriterInterface
 {
     /** {@inheritdoc} */
-    public function create($path, array $firstRow)
+    public function create($path, array $firstRow, $sheetName = null)
     {
-        $this->createAndWrite($path, [$firstRow]);
+        $this->createAndWrite($path, array($firstRow), $sheetName);
     }
 
     /** {@inheritdoc} */

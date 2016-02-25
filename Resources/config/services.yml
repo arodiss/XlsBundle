@@ -11,9 +11,9 @@ services:
     arodiss.xls.writer.buffered:
         class: Arodiss\XlsBundle\Xls\Writer\BufferedWriter
         arguments:
-          - @arodiss.xls.writer
+          - '@arodiss.xls.writer'
 
     arodiss.xls.builder:
         class: Arodiss\XlsBundle\Xls\Builder\XlsBuilder
         arguments:
-          - @arodiss.xls.writer.buffered
+          - '@arodiss.xls.writer.buffered'

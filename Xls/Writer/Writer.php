@@ -44,7 +44,9 @@ class Writer extends AbstractWriter
                         $columnIndex,
                         $rowIndex + 1,
                         $cell,
-                        PHPExcel_Cell_DataType::TYPE_STRING
+                        (is_int($cell) || is_float($cell))
+                            ? \PHPExcel_Cell_DataType::TYPE_NUMERIC
+                            : \PHPExcel_Cell_DataType::TYPE_STRING
                     )
                 ;
             }

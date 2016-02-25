@@ -1,14 +1,15 @@
 <?php
+
 namespace Arodiss\XlsBundle\Xls\Writer;
 
 interface WriterInterface
 {
-
     /**
      * @param string $path
      * @param array $firstRow
+     * @param string $sheetName
      */
-    public function create($path, array $firstRow);
+    public function create($path, array $firstRow, $sheetName = null);
 
     /**
      * @param string $path
@@ -25,6 +26,7 @@ interface WriterInterface
     /**
      * @param string $path
      * @param array $row
+     * @param string $sheetName
      */
-    public function createAndWrite($path, array $row);
+    public function createAndWrite($path, array $row, $sheetName = null);
 }

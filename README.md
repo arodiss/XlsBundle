@@ -62,7 +62,7 @@ while($iterator->valid())
 //same output format
 ```
 
-Download XLS file
+Return XLS file from Symfony controller
 --------
 ```PHP
 $file = $container
@@ -79,7 +79,7 @@ $response = new Response();
 $response->headers->set("Content-Type", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
 $response->headers->set("Content-Disposition", "attachment;filename=excelfile.xlsx");
 $response->setContent(file_get_contents($file));
-$response->send();
+return $response;
 ```
 
 
@@ -89,10 +89,11 @@ Write in a file (recommended)
 $writer = $container->get("arodiss.xls.writer.buffered");
 $writer->create("users.xls", array("name", "email")); //second argument represents first row
 
-foreach ($userProvider->getUsers() as $user)
-{
+foreach ($userProvider->getUsers() as $user) {
     $writer->appendRow("users.xls", array($user->getName(), $user->getEmail()));
 }
+$writer->flush();
+
 ```
 
 Write in a file (not recommended)

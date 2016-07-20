@@ -15,6 +15,8 @@ class PythonReader extends ReaderAbstract implements ReaderInterface
     const COMMAND_GET_COUNT = "count";
     const COMMAND_READ_CHUNk = "read";
 
+    const MAX_COUNT_EMPTY_ROWS = 100;
+
     /** @var string */
     private $pythonExecutable;
 
@@ -43,9 +45,13 @@ class PythonReader extends ReaderAbstract implements ReaderInterface
     }
 
     /** {@inheritdoc} */
-    public function getRowsNumber($path)
+    public function getRowsNumber($path, $maxCountEmptyRows = null)
     {
-        return intval($this->executeCommand(self::COMMAND_GET_COUNT, $path));
+        return intval($this->executeCommand(
+            self::COMMAND_GET_COUNT,
+            $path,
+            "--max-empty-rows=" . (is_null($maxCountEmptyRows) ? self::MAX_COUNT_EMPTY_ROWS : $maxCountEmptyRows)
+        ));
     }
 
     /**

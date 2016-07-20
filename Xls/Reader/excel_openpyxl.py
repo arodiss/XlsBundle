@@ -5,12 +5,14 @@ import os
 import argparse
 import datetime
 
+
 def run(argv):
   parser = argparse.ArgumentParser()
   parser.add_argument('--size')
   parser.add_argument('--start')
   parser.add_argument('--action')
   parser.add_argument('--file')
+  parser.add_argument('--max-empty-rows', dest="max_empty_rows")
   args = parser.parse_args()
 
   if False == os.path.isfile(args.file):
@@ -20,7 +22,27 @@ def run(argv):
   workbook = load_workbook(args.file, read_only=True)
   sheet = workbook.active
   if args.action == "count":
-    print(sheet.max_row)
+    max_count_empty_rows = int(args.max_empty_rows)
+    sheet.max_row = None
+    rows_count = 0
+    empty_rows_count = 0
+    for row in sheet.iter_rows(row_offset=int(1) - 1):
+      current_row_read = []
+      for cell in row:
+        value = cell.value
+        if value is None:
+          continue
+        else:
+          current_row_read.append(True)
+          empty_rows_count = 0
+          break
+      if not current_row_read:
+        empty_rows_count += 1
+      else:
+        rows_count += 1
+      if max_count_empty_rows < empty_rows_count:
+        break
+    print(rows_count)
   elif args.action == "read":
     rows = []
     for row in sheet.iter_rows(row_offset=int(args.start) - 1):

@@ -10,6 +10,7 @@ def run(argv):
   parser.add_argument('--start')
   parser.add_argument('--action')
   parser.add_argument('--file')
+  parser.add_argument('--max-empty-rows', dest="max_empty_rows")
   args = parser.parse_args()
 
   if False == os.path.isfile(args.file):

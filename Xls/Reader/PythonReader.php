@@ -70,7 +70,8 @@ class PythonReader extends ReaderAbstract implements ReaderInterface
             escapeshellarg($fileName),
             $extraOptions
         ));
-        $process->setTimeout(30);
+        $process->setTimeout(null);
+        $process->setIdleTimeout(null);
 
         return $process->mustRun()->getOutput();
     }

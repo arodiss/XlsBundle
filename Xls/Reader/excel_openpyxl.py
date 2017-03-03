@@ -13,6 +13,7 @@ def run(argv):
   parser.add_argument('--action')
   parser.add_argument('--file')
   parser.add_argument('--max-empty-rows', dest="max_empty_rows")
+  parser.add_argument('--count-empty-rows', dest="count_empty_rows", default=False)
   args = parser.parse_args()
 
   if False == os.path.isfile(args.file):
@@ -21,9 +22,11 @@ def run(argv):
 
   workbook = load_workbook(args.file, read_only=True)
   sheet = workbook.active
+  sheet.max_row = None
+
   if args.action == "count":
     max_count_empty_rows = int(args.max_empty_rows)
-    sheet.max_row = None
+    count_empty_rows = bool(args.count_empty_rows)
     rows_count = 0
     empty_rows_count = 0
     for row in sheet.iter_rows(row_offset=int(1) - 1):
@@ -34,6 +37,8 @@ def run(argv):
           continue
         else:
           current_row_read.append(True)
+          if count_empty_rows:
+            rows_count += empty_rows_count
           empty_rows_count = 0
           break
       if not current_row_read:

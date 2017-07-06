@@ -67,7 +67,7 @@ Return XLS file from Symfony controller
 ```PHP
 $file = $container
     ->get("arodiss.xls.builder")
-    ->createAndWrite(array(
+    ->buildXlsFromArray(array(
         array("row one field one", "row one field two"),
         array("row two field one")
     ))

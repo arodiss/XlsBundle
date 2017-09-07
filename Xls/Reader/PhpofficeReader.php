@@ -12,28 +12,37 @@ class PhpofficeReader extends ReaderAbstract implements ReaderInterface
     /** \PHPExcel_Reader_Abstract[] */
     private $worksheets = [];
 
-    /** {@inheirtdoc} */
+    /** boolean */
+    private $readDataOnly = true;
+
+    /** {@inheritdoc} */
     public function readAll($path)
     {
         return $this->getExcel($path)->toArray();
     }
 
-    /** {@inheirtdoc} */
+    /** {@inheritdoc} */
     public function getRowsChunk($path, $startRow = 1, $size = 65000)
     {
         return RowFilter::clearEmptyRows($this->getWorksheetPart($path, $startRow, $size)->toArray());
     }
 
-    /** {@inheirtdoc} */
+    /** {@inheritdoc} */
     public function getReadIterator($path)
     {
         return new StringifyIterator(new NestingDiscloseIterator($this->getExcel($path)->getRowIterator()));
     }
 
-    /** {@inheirtdoc} */
+    /** {@inheritdoc} */
     public function getRowsNumber($path, $maxCountEmptyRows = null)
     {
         return $this->getExcel($path)->getHighestRow();
+    }
+
+    /** {@inheritdoc} */
+    public function setReadDataOnly($readDataOnly)
+    {
+        $this->readDataOnly = $readDataOnly;
     }
 
     /**
@@ -68,7 +77,7 @@ class PhpofficeReader extends ReaderAbstract implements ReaderInterface
     {
         if (false === isset($this->worksheets[$path]) || $readFilter) {
             $reader = $this->createReaderForFile($path);
-            $reader->setReadDataOnly(true);
+            $reader->setReadDataOnly($this->readDataOnly);
             if ($readFilter) {
                 $reader->setReadFilter($readFilter);
             }

@@ -10,10 +10,12 @@ services:
 
     arodiss.xls.writer.buffered:
         class: Arodiss\XlsBundle\Xls\Writer\BufferedWriter
+        public: true
         arguments:
           - '@arodiss.xls.writer'
 
     arodiss.xls.builder:
         class: Arodiss\XlsBundle\Xls\Builder\XlsBuilder
+        public: true
         arguments:
           - '@arodiss.xls.writer.buffered'
